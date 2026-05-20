@@ -709,14 +709,41 @@ const ADDONS = [
   {id:'walls',label:'Walls/Stains',price:55},
 ];
 
+const INCLUDED_IN = {
+  deep:      ['fridge','oven'],
+  moveinout: ['fridge','oven']
+};
+
 function buildAddons() {
   const el = document.getElementById('addons-check');
   if (el.innerHTML) return;
   el.innerHTML = ADDONS.map(a => `
-    <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:8px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+    <label id="addon-wrap-${a.id}" style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:8px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
       <input type="checkbox" id="addon-${a.id}" onchange="calcEstimate()" style="width:auto;accent-color:var(--g2)">
-      ${a.label} +$${a.price}
+      <span id="addon-lbl-${a.id}">${a.label} +$${a.price}</span>
     </label>`).join('');
+}
+
+function updateAddonStates(type) {
+  const included = INCLUDED_IN[type] || [];
+  ADDONS.forEach(a => {
+    const cb   = document.getElementById('addon-' + a.id);
+    const wrap = document.getElementById('addon-wrap-' + a.id);
+    const lbl  = document.getElementById('addon-lbl-' + a.id);
+    if (!cb) return;
+    if (included.includes(a.id)) {
+      cb.checked  = false;
+      cb.disabled = true;
+      wrap.style.opacity = '0.5';
+      wrap.style.cursor  = 'default';
+      lbl.textContent    = a.label + ' — included';
+    } else {
+      cb.disabled = false;
+      wrap.style.opacity = '1';
+      wrap.style.cursor  = 'pointer';
+      lbl.textContent    = a.label + ' +$' + a.price;
+    }
+  });
 }
 
 function calcEstimate() {
@@ -728,20 +755,24 @@ function calcEstimate() {
   const cond  = parseFloat(document.getElementById('est-cond').value);
   const city  = parseInt(document.getElementById('est-city').value||0);
 
-  const base = BASE[type][sqft] || 120;
-  const bedAdj = BED_ADJ[beds] || 0;
+  updateAddonStates(type);
+
+  const base    = BASE[type][sqft] || 120;
+  const bedAdj  = BED_ADJ[beds]  || 0;
   const bathAdj = BATH_ADJ[baths] || 0;
 
+  const included = INCLUDED_IN[type] || [];
   let addonsTotal = 0, addonsUsed = [];
   ADDONS.forEach(a => {
+    if (included.includes(a.id)) return;
     const cb = document.getElementById('addon-' + a.id);
     if (cb && cb.checked) { addonsTotal += a.price; addonsUsed.push(a.label); }
   });
 
-  const subtotal = (base + bedAdj + bathAdj + city + addonsTotal) * cond;
+  const subtotal    = (base + bedAdj + bathAdj + city + addonsTotal) * cond;
   const recommended = Math.round(subtotal * freq);
-  const min = Math.round(recommended * 0.9);
-  const max = Math.round(recommended * 1.1);
+  const min         = Math.round(recommended * 0.9);
+  const max         = Math.round(recommended * 1.1);
 
   const el = document.getElementById('est-breakdown');
   el.innerHTML = `
@@ -749,10 +780,11 @@ function calcEstimate() {
     <div class="est-row"><span>Bedrooms adj.</span><span>${bedAdj>=0?'+':''}$${bedAdj}</span></div>
     <div class="est-row"><span>Bathrooms adj.</span><span>${bathAdj>=0?'+':''}$${bathAdj}</span></div>
     ${city > 0 ? `<div class="est-row"><span>City charge</span><span>+$${city}</span></div>` : ''}
+    ${included.length ? `<div class="est-row"><span style="color:#1D9E75">Fridge & oven included</span><span style="color:#1D9E75">$0</span></div>` : ''}
     ${addonsTotal > 0 ? `<div class="est-row"><span>Add-ons</span><span>+$${addonsTotal}</span></div>` : ''}
     ${cond > 1 ? `<div class="est-row"><span>Condition ×</span><span>${cond}</span></div>` : ''}
     ${freq < 1 ? `<div class="est-row"><span>Frequency discount</span><span>×${freq}</span></div>` : ''}
-    <div class="est-row total"><span>Recommended</span><span>$${recommended}</span></div>
+    <div class="est-row total"><span>Total</span><span>$${recommended}</span></div>
     <div class="est-row"><span style="color:var(--text3)">Range</span><span style="color:var(--text3)">$${min} – $${max}</span></div>
   `;
   window._lastEstimate = { type, recommended, min, max, addonsUsed, beds, baths };
@@ -793,7 +825,7 @@ ${svc.desc}${addonsLine}
 💰 Total: $${price}
 ━━━━━━━━━━━━━━━━━━━━
 
-This price includes all supplies and equipment — no need to provide anything! However, if you prefer us to use your own products or supplies, we are happy to accommodate that as well. Just let us know in advance. 
+This price includes all supplies and equipment — no need to provide anything! However, if you prefer us to use your own products or supplies, we are happy to accommodate that as well. Just let us know in advance.
 
 To book your service or ask any questions, text or call us:
 📞 (346) 868-0538
