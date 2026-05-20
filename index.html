@@ -29,41 +29,41 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; max-width: 430px; margin: 0 auto; position: relative; overflow-x: hidden; }
- 
+
 /* NAV */
 .nav { background: var(--g1); padding: 52px 20px 16px; position: sticky; top: 0; z-index: 100; }
 .nav-title { font-size: 22px; font-weight: 600; color: #fff; letter-spacing: -0.5px; }
 .nav-sub { font-size: 13px; color: var(--g4); margin-top: 2px; }
- 
+
 /* BOTTOM TAB BAR */
 .tabbar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: var(--card); border-top: 1px solid var(--border); display: flex; z-index: 200; padding-bottom: env(safe-area-inset-bottom, 0); }
 .tab { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0 8px; cursor: pointer; gap: 4px; border: none; background: none; color: var(--text3); font-family: 'DM Sans', sans-serif; }
 .tab.active { color: var(--g2); }
 .tab svg { width: 22px; height: 22px; stroke-width: 1.8; }
 .tab span { font-size: 10px; font-weight: 500; }
- 
+
 /* PAGES */
 .page { display: none; padding: 16px 16px 90px; animation: fadeIn 0.2s ease; }
 .page.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
- 
+
 /* CARDS */
 .card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
 .card-title { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
- 
+
 /* STAT GRID */
 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
 .stat { background: var(--card); border-radius: var(--radius-sm); padding: 14px; border: 1px solid var(--border); }
 .stat-val { font-size: 26px; font-weight: 600; color: var(--g1); font-family: 'DM Mono', monospace; letter-spacing: -1px; }
 .stat-lbl { font-size: 12px; color: var(--text3); margin-top: 2px; }
- 
+
 /* HERO CARD */
 .hero-card { background: linear-gradient(135deg, var(--g1) 0%, var(--g2) 100%); border-radius: var(--radius); padding: 20px; margin-bottom: 12px; color: #fff; position: relative; overflow: hidden; }
 .hero-card::after { content: ''; position: absolute; right: -20px; top: -20px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.06); }
 .hero-amt { font-size: 38px; font-weight: 600; letter-spacing: -1.5px; font-family: 'DM Mono', monospace; }
 .hero-lbl { font-size: 13px; color: var(--g4); margin-bottom: 4px; }
 .hero-sub { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 6px; }
- 
+
 /* BUTTONS */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 13px 20px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; border: none; transition: opacity 0.15s, transform 0.1s; width: 100%; }
 .btn:active { transform: scale(0.97); opacity: 0.85; }
@@ -71,7 +71,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .btn-outline { background: transparent; border: 1.5px solid var(--g2); color: var(--g2); }
 .btn-danger { background: var(--danger); color: #fff; }
 .btn-sm { padding: 8px 14px; font-size: 13px; width: auto; border-radius: 8px; }
- 
+
 /* FORM */
 .form-group { margin-bottom: 14px; }
 label { font-size: 13px; font-weight: 500; color: var(--text2); display: block; margin-bottom: 5px; }
@@ -79,14 +79,14 @@ input, select, textarea { width: 100%; padding: 12px 14px; border: 1.5px solid v
 input:focus, select:focus, textarea:focus { border-color: var(--g3); background: #fff; }
 textarea { resize: vertical; min-height: 80px; }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
- 
+
 /* PILL / BADGE */
 .badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; }
 .badge-green { background: var(--g5); color: var(--g1); }
 .badge-orange { background: #FEF3CD; color: #92600A; }
 .badge-red { background: #FDEAEA; color: #A32D2D; }
 .badge-gray { background: #F0F0F0; color: #666; }
- 
+
 /* LIST ITEMS */
 .list-item { display: flex; align-items: center; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
 .list-item:last-child { border-bottom: none; }
@@ -95,12 +95,12 @@ textarea { resize: vertical; min-height: 80px; }
 .list-item-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
 .list-item-right { text-align: right; flex-shrink: 0; margin-left: 12px; }
 .list-item-amt { font-size: 16px; font-weight: 600; color: var(--g1); font-family: 'DM Mono', monospace; }
- 
+
 /* EMPTY STATE */
 .empty { text-align: center; padding: 40px 20px; color: var(--text3); }
 .empty svg { width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.4; }
 .empty p { font-size: 14px; }
- 
+
 /* MODAL */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 300; align-items: flex-end; justify-content: center; }
 .modal-overlay.open { display: flex; }
@@ -108,19 +108,19 @@ textarea { resize: vertical; min-height: 80px; }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 99px; margin: 0 auto 20px; }
 .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
- 
+
 /* SECTION HEADER */
 .section-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .section-hdr h2 { font-size: 17px; font-weight: 600; }
- 
+
 /* ESTIMATE PREVIEW */
 .est-preview { background: var(--g5); border-radius: var(--radius-sm); padding: 14px; margin: 14px 0; }
 .est-row { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; color: var(--text2); }
 .est-row.total { font-weight: 600; color: var(--text); font-size: 16px; border-top: 1px solid var(--border); margin-top: 6px; padding-top: 8px; }
- 
+
 /* DIVIDER */
 .divider { height: 1px; background: var(--border); margin: 16px 0; }
- 
+
 /* NOTIFICATION BANNER */
 .install-banner { background: var(--g1); color: #fff; padding: 12px 16px; font-size: 13px; display: flex; gap: 10px; align-items: center; border-radius: var(--radius-sm); margin-bottom: 14px; }
 .install-banner svg { flex-shrink: 0; }
@@ -128,13 +128,13 @@ textarea { resize: vertical; min-height: 80px; }
 </style>
 </head>
 <body>
- 
+
 <!-- HEADER -->
 <div class="nav" id="nav">
   <div class="nav-title" id="nav-title">Cleaning TX Solution</div>
   <div class="nav-sub" id="nav-sub">Dashboard</div>
 </div>
- 
+
 <!-- PAGES -->
 <div class="page active" id="page-home">
   <div class="install-banner" id="install-banner">
@@ -142,13 +142,13 @@ textarea { resize: vertical; min-height: 80px; }
     <span>Tap <b>Share → Add to Home Screen</b> to install this app on your iPhone!</span>
     <span class="close-banner" onclick="document.getElementById('install-banner').style.display='none'">✕</span>
   </div>
- 
+
   <div class="hero-card">
     <div class="hero-lbl">This month's revenue</div>
     <div class="hero-amt" id="home-revenue">$0</div>
     <div class="hero-sub" id="home-jobs">0 jobs completed</div>
   </div>
- 
+
   <div class="stat-grid">
     <div class="stat">
       <div class="stat-val" id="home-pending">$0</div>
@@ -159,7 +159,7 @@ textarea { resize: vertical; min-height: 80px; }
       <div class="stat-lbl">Total clients</div>
     </div>
   </div>
- 
+
   <div class="card">
     <div class="card-title">Recent jobs</div>
     <div id="home-recent-list">
@@ -169,13 +169,13 @@ textarea { resize: vertical; min-height: 80px; }
       </div>
     </div>
   </div>
- 
+
   <button class="btn btn-primary" onclick="openModal('modal-job')">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     Add new job
   </button>
 </div>
- 
+
 <div class="page" id="page-clients">
   <div class="section-hdr">
     <h2>Clients</h2>
@@ -190,7 +190,7 @@ textarea { resize: vertical; min-height: 80px; }
     </div>
   </div>
 </div>
- 
+
 <div class="page" id="page-jobs">
   <div class="section-hdr">
     <h2>All Jobs</h2>
@@ -210,7 +210,7 @@ textarea { resize: vertical; min-height: 80px; }
     </div>
   </div>
 </div>
- 
+
 <div class="page" id="page-estimate">
   <h2 style="margin-bottom:14px;font-size:17px;font-weight:600">Price Calculator</h2>
   <div class="card">
@@ -309,9 +309,9 @@ textarea { resize: vertical; min-height: 80px; }
     <div class="card-title" style="margin-top:4px">Add-ons</div>
     <div id="addons-check" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;"></div>
   </div>
- 
+
   <div class="est-preview" id="est-breakdown"></div>
- 
+
   <button class="btn btn-primary" onclick="copyEstimate()">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
     Copy estimate for client
@@ -322,7 +322,7 @@ textarea { resize: vertical; min-height: 80px; }
     Save as job
   </button>
 </div>
- 
+
 <!-- MODALS -->
 <div class="modal-overlay" id="modal-client" onclick="closeModalOutside(event,'modal-client')">
   <div class="modal">
@@ -338,7 +338,7 @@ textarea { resize: vertical; min-height: 80px; }
     <button class="btn btn-outline" onclick="closeModal('modal-client')">Cancel</button>
   </div>
 </div>
- 
+
 <div class="modal-overlay" id="modal-job" onclick="closeModalOutside(event,'modal-job')">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -389,7 +389,7 @@ textarea { resize: vertical; min-height: 80px; }
     <button class="btn btn-outline" onclick="closeModal('modal-job')">Cancel</button>
   </div>
 </div>
- 
+
 <div class="modal-overlay" id="modal-job-detail" onclick="closeModalOutside(event,'modal-job-detail')">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -399,7 +399,7 @@ textarea { resize: vertical; min-height: 80px; }
     <button class="btn btn-outline" onclick="closeModal('modal-job-detail')">Close</button>
   </div>
 </div>
- 
+
 <div class="modal-overlay" id="modal-client-detail" onclick="closeModalOutside(event,'modal-client-detail')">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -409,7 +409,7 @@ textarea { resize: vertical; min-height: 80px; }
     <button class="btn btn-outline" onclick="closeModal('modal-client-detail')">Close</button>
   </div>
 </div>
- 
+
 <!-- TAB BAR -->
 <nav class="tabbar">
   <button class="tab active" onclick="showPage('home',this)" id="tab-home">
@@ -429,20 +429,20 @@ textarea { resize: vertical; min-height: 80px; }
     <span>Estimate</span>
   </button>
 </nav>
- 
+
 <script>
 // ── DATA LAYER ──────────────────────────────────────────────────────────────
 function load(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch(e) { return []; } }
 function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
- 
+
 let clients = load('ctx_clients');
 let jobs    = load('ctx_jobs');
 let jobFilter = 'all';
- 
+
 // ── NAVIGATION ──────────────────────────────────────────────────────────────
 const pageTitles = { home:'Cleaning TX Solution', clients:'Clients', jobs:'Jobs', estimate:'Price Calculator' };
 const pageSubs   = { home:'Spring, TX · Dashboard', clients:'Your client list', jobs:'Job history', estimate:'Quick quote tool' };
- 
+
 function showPage(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -455,7 +455,7 @@ function showPage(id, el) {
   if (id === 'jobs') renderJobs();
   if (id === 'estimate') { buildAddons(); calcEstimate(); }
 }
- 
+
 // ── MODALS ──────────────────────────────────────────────────────────────────
 function openModal(id) {
   if (id === 'modal-job') populateClientSelect();
@@ -469,7 +469,7 @@ function closeModal(id) {
 function closeModalOutside(e, id) {
   if (e.target === document.getElementById(id)) closeModal(id);
 }
- 
+
 // ── CLIENTS ──────────────────────────────────────────────────────────────────
 function saveClient() {
   const name = document.getElementById('cl-name').value.trim();
@@ -489,7 +489,7 @@ function saveClient() {
   closeModal('modal-client');
   renderClients();
 }
- 
+
 function renderClients() {
   const el = document.getElementById('clients-list');
   if (!clients.length) {
@@ -511,7 +511,7 @@ function renderClients() {
     </div>`;
   }).join('');
 }
- 
+
 function showClientDetail(id) {
   const c = clients.find(x => x.id === id);
   if (!c) return;
@@ -552,20 +552,20 @@ function showClientDetail(id) {
   };
   openModal('modal-client-detail');
 }
- 
+
 // ── JOBS ─────────────────────────────────────────────────────────────────────
 function populateClientSelect() {
   const sel = document.getElementById('job-client');
   sel.innerHTML = '<option value="">-- Select existing client --</option>' +
     clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 }
- 
+
 function saveJob() {
   const price = parseFloat(document.getElementById('job-price').value);
   const type  = document.getElementById('job-type').value;
   const date  = document.getElementById('job-date').value;
   if (!price || !date) { alert('Price and date are required.'); return; }
- 
+
   let clientId = null, clientName = '';
   const sel = document.getElementById('job-client').value;
   const quickName = document.getElementById('job-client-name').value.trim();
@@ -575,7 +575,7 @@ function saveJob() {
   } else if (quickName) {
     clientName = quickName;
   } else { alert('Please select or enter a client name.'); return; }
- 
+
   const j = {
     id: Date.now(), clientId, clientName,
     type, date, price,
@@ -591,7 +591,7 @@ function saveJob() {
   renderJobs();
   renderHome();
 }
- 
+
 function filterJobs(f) {
   jobFilter = f;
   ['all','pending','paid'].forEach(x => {
@@ -599,7 +599,7 @@ function filterJobs(f) {
   });
   renderJobs();
 }
- 
+
 function renderJobs() {
   const el = document.getElementById('jobs-list');
   let filtered = jobFilter === 'all' ? jobs : jobs.filter(j => j.status === jobFilter);
@@ -620,7 +620,7 @@ function renderJobs() {
       </div>
     </div>`).join('');
 }
- 
+
 function showJobDetail(id) {
   const j = jobs.find(x => x.id === id);
   if (!j) return;
@@ -646,7 +646,7 @@ function showJobDetail(id) {
   };
   openModal('modal-job-detail');
 }
- 
+
 function markPaid(id) {
   const j = jobs.find(x => x.id === id);
   if (j) { j.status = 'paid'; save('ctx_jobs', jobs); }
@@ -654,7 +654,7 @@ function markPaid(id) {
   renderJobs();
   renderHome();
 }
- 
+
 // ── HOME ─────────────────────────────────────────────────────────────────────
 function renderHome() {
   const now = new Date();
@@ -665,12 +665,12 @@ function renderHome() {
   const revenue = thisMonth.filter(j => j.status === 'paid').reduce((s,j) => s + Number(j.price||0), 0);
   const pending = jobs.filter(j => j.status === 'pending').reduce((s,j) => s + Number(j.price||0), 0);
   const completed = thisMonth.filter(j => j.status === 'paid').length;
- 
+
   document.getElementById('home-revenue').textContent = '$' + revenue.toFixed(0);
   document.getElementById('home-jobs').textContent = completed + ' job' + (completed!==1?'s':'') + ' paid this month';
   document.getElementById('home-pending').textContent = '$' + pending.toFixed(0);
   document.getElementById('home-clients').textContent = clients.length;
- 
+
   const recentEl = document.getElementById('home-recent-list');
   const recent = [...jobs].reverse().slice(0, 5);
   if (!recent.length) {
@@ -689,7 +689,7 @@ function renderHome() {
       </div>`).join('');
   }
 }
- 
+
 // ── ESTIMATE CALCULATOR ──────────────────────────────────────────────────────
 const BASE = {
   standard:  {600:80,900:100,1200:120,1600:145,2000:170,2500:200,3000:230,3500:260,4000:295,5000:335,5001:380},
@@ -708,7 +708,7 @@ const ADDONS = [
   {id:'cabinets',label:'Cabinets (int.)',price:50},
   {id:'walls',label:'Walls/Stains',price:55},
 ];
- 
+
 function buildAddons() {
   const el = document.getElementById('addons-check');
   if (el.innerHTML) return;
@@ -718,7 +718,7 @@ function buildAddons() {
       ${a.label} +$${a.price}
     </label>`).join('');
 }
- 
+
 function calcEstimate() {
   const type  = document.getElementById('est-type').value;
   const sqft  = document.getElementById('est-sqft').value;
@@ -727,22 +727,22 @@ function calcEstimate() {
   const baths = parseFloat(document.getElementById('est-baths').value);
   const cond  = parseFloat(document.getElementById('est-cond').value);
   const city  = parseInt(document.getElementById('est-city').value||0);
- 
+
   const base = BASE[type][sqft] || 120;
   const bedAdj = BED_ADJ[beds] || 0;
   const bathAdj = BATH_ADJ[baths] || 0;
- 
+
   let addonsTotal = 0, addonsUsed = [];
   ADDONS.forEach(a => {
     const cb = document.getElementById('addon-' + a.id);
     if (cb && cb.checked) { addonsTotal += a.price; addonsUsed.push(a.label); }
   });
- 
+
   const subtotal = (base + bedAdj + bathAdj + city + addonsTotal) * cond;
   const recommended = Math.round(subtotal * freq);
   const min = Math.round(recommended * 0.9);
   const max = Math.round(recommended * 1.1);
- 
+
   const el = document.getElementById('est-breakdown');
   el.innerHTML = `
     <div class="est-row"><span>Base price</span><span>$${base}</span></div>
@@ -757,56 +757,56 @@ function calcEstimate() {
   `;
   window._lastEstimate = { type, recommended, min, max, addonsUsed, beds, baths };
 }
- 
+
 function copyEstimate() {
   const e = window._lastEstimate || {};
   const price = e.recommended || 0;
   const addonsLine = e.addonsUsed && e.addonsUsed.length
     ? `\n\nAdditional services included:\n${e.addonsUsed.map(a => '  • ' + a).join('\n')}`
     : '';
- 
+
   const serviceDetails = {
     standard: {
       name: 'Standard Cleaning',
-      desc: `Our Standard Cleaning covers everything your home needs to stay fresh and tidy:\n  • Dusting all surfaces, furniture & fans\n  • Kitchen (counters, stovetop, sink, outside of appliances)\n  • Bathrooms (toilet, sink, shower/tub, mirrors)\n  • Vacuuming & mopping all floors\n  • Emptying trash cans\n  • Making beds (if linens are available)`
+      desc: `Here is what's included in your Standard Cleaning:\n  ✔ Sweep, vacuum and mop floors\n  ✔ Clean surfaces, dust cleaning\n  ✔ Clean toilets, sinks, showers & bath tubs\n  ✔ Empty trash bins, organize belongings\n  ✔ Oven, refrigerator and microwave (outside)\n  ✔ Disinfect surfaces, clean rugs & mirrors`
     },
     deep: {
       name: 'Deep Cleaning',
-      desc: `Our Deep Cleaning is a thorough top-to-bottom clean, perfect for homes that need extra attention:\n  • Everything in the Standard Clean, PLUS:\n  • Inside microwave\n  • Baseboards & door frames\n  • Light switches & door handles\n  • Window sills\n  • Behind & under furniture\n  • Detailed bathroom scrubbing`
+      desc: `Here is what's included in your Deep Cleaning:\n  ✔ Sweep, vacuum and mop floors\n  ✔ Deep clean surfaces, dust cleaning\n  ✔ Deep clean toilets, sinks, showers & bath tubs\n  ✔ Empty trash bins, organize belongings\n  ✔ Oven and microwave (inside & outside)\n  ✔ Disinfect surfaces, clean rugs & mirrors\n  ✔ Deep clean furniture, walls and lamps`
     },
     moveinout: {
       name: 'Move In / Move Out Cleaning',
-      desc: `Our Move In/Out Cleaning leaves the property spotless for inspection or new occupants:\n  • Full deep clean of every room\n  • Inside all cabinets & drawers\n  • Inside closets\n  • Baseboards, doors & door frames\n  • Window sills & tracks\n  • All appliances (outside)\n  • Bathrooms scrubbed top to bottom\n  • Garage sweep (if applicable)`
+      desc: `Here is what's included in your Move In/Out Cleaning:\n  ✔ Sweep, vacuum and mop floors\n  ✔ Deep clean surfaces, dust cleaning\n  ✔ Deep clean toilets, sinks, showers & bath tubs\n  ✔ Empty trash bins, organize belongings\n  ✔ Oven, fridge and microwave (inside & outside)\n  ✔ Disinfect surfaces, clean rugs & mirrors\n  ✔ Deep clean furniture, walls, lamps and ceilings`
     }
   };
- 
+
   const svc = serviceDetails[e.type] || serviceDetails['standard'];
- 
+
   const txt =
 `Hi! Thank you for your interest in Cleaning TX Solution 🏠✨
- 
+
 Here is your estimate for a ${svc.name}:
- 
+
 ${svc.desc}${addonsLine}
- 
+
 ━━━━━━━━━━━━━━━━━━━━
 💰 Total: $${price}
 ━━━━━━━━━━━━━━━━━━━━
- 
-This price includes all supplies and equipment — you don't need to provide anything!
- 
+
+This price includes all supplies and equipment — you don't need to provide anything! 
+
 To book your service or ask any questions, text or call us:
 📞 (346) 868-0538
- 
+
 We look forward to making your home shine! 🌟
- 
+
 — Cleaning TX Solution`;
- 
+
   if (navigator.clipboard) {
     navigator.clipboard.writeText(txt).then(() => alert('Estimate copied! Paste it in your text message.'));
   }
 }
- 
+
 function saveJobFromEstimate() {
   const e = window._lastEstimate || {};
   document.getElementById('job-type').value = e.type === 'standard' ? 'Standard' : e.type === 'deep' ? 'Deep Clean' : 'Move In/Out';
@@ -815,7 +815,7 @@ function saveJobFromEstimate() {
   populateClientSelect();
   openModal('modal-job');
 }
- 
+
 // Init
 renderHome();
 buildAddons();
