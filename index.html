@@ -699,49 +699,59 @@ const BASE = {
 const BED_ADJ  = {1:-30,2:-15,3:0,4:20,5:40,6:60,7:85};
 const BATH_ADJ = {1:-20, 1.5:-10, 2:0, 2.5:12, 3:25, 3.5:37, 4:50, 4.5:65, 5:80};
 const ADDONS = [
-  {id:'fridge',label:'Refrigerator',price:35},
-  {id:'oven',label:'Oven',price:40},
-  {id:'windows',label:'Windows (int.)',price:45},
-  {id:'laundry',label:'Laundry',price:30},
-  {id:'garage',label:'Garage',price:60},
-  {id:'patio',label:'Patio',price:40},
-  {id:'cabinets',label:'Cabinets (int.)',price:50},
-  {id:'walls',label:'Walls/Stains',price:55},
+  {id:'fridge',   label:'Refrigerator',             price:40, type:'check'},
+  {id:'oven',     label:'Oven',                     price:35, type:'check'},
+  {id:'cabinets', label:'Cabinets (int.)',           price:15, type:'check'},
+  {id:'walls',    label:'Walls / Stains',            price:20, type:'check'},
+  {id:'beds',     label:'Make beds & change linens', price:15, type:'qty', unit:'bed',    perUnit:15},
+  {id:'windows',  label:'Inside windows',            price:5, type:'qty', unit:'window', perUnit:10},
+  {id:'laundry',  label:'Laundry (wash & dry)',      price:30, type:'check'},
+  {id:'garage',   label:'Garage sweep',              price:25, type:'check'},
+  {id:'dishes',   label:'Dishes / kitchen sink',     price:25, type:'check'},
+  {id:'junk',     label:'Box / junk removal',        price:50, type:'check'},
 ];
 
 const INCLUDED_IN = {
-  deep:      ['fridge','oven'],
-  moveinout: ['fridge','oven']
+  deep:      ['fridge','oven','cabinets','walls'],
+  moveinout: ['fridge','oven','cabinets','walls']
 };
 
 function buildAddons() {
   const el = document.getElementById('addons-check');
   if (el.innerHTML) return;
-  el.innerHTML = ADDONS.map(a => `
-    <label id="addon-wrap-${a.id}" style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:8px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+  el.innerHTML = ADDONS.map(a => {
+    if (a.type === 'qty') {
+      return `<div id="addon-wrap-${a.id}" style="display:flex;align-items:center;gap:8px;font-size:13px;padding:8px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+        <span id="addon-lbl-${a.id}" style="flex:1">${a.label} ($${a.perUnit}/${a.unit})</span>
+        <input type="number" id="addon-${a.id}" min="0" max="30" value="0" onchange="calcEstimate()" style="width:54px;padding:4px 6px;font-size:13px;text-align:center;border:1px solid var(--border);border-radius:6px;background:var(--card)">
+      </div>`;
+    }
+    return `<label id="addon-wrap-${a.id}" style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:8px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
       <input type="checkbox" id="addon-${a.id}" onchange="calcEstimate()" style="width:auto;accent-color:var(--g2)">
       <span id="addon-lbl-${a.id}">${a.label} +$${a.price}</span>
-    </label>`).join('');
+    </label>`;
+  }).join('');
 }
 
 function updateAddonStates(type) {
   const included = INCLUDED_IN[type] || [];
   ADDONS.forEach(a => {
-    const cb   = document.getElementById('addon-' + a.id);
+    const inp  = document.getElementById('addon-' + a.id);
     const wrap = document.getElementById('addon-wrap-' + a.id);
     const lbl  = document.getElementById('addon-lbl-' + a.id);
-    if (!cb) return;
+    if (!inp) return;
     if (included.includes(a.id)) {
-      cb.checked  = false;
-      cb.disabled = true;
+      if (a.type === 'check') { inp.checked = false; inp.disabled = true; }
+      else { inp.value = 0; inp.disabled = true; }
       wrap.style.opacity = '0.5';
       wrap.style.cursor  = 'default';
       lbl.textContent    = a.label + ' — included';
     } else {
-      cb.disabled = false;
+      inp.disabled = false;
       wrap.style.opacity = '1';
-      wrap.style.cursor  = 'pointer';
-      lbl.textContent    = a.label + ' +$' + a.price;
+      wrap.style.cursor  = a.type === 'qty' ? 'default' : 'pointer';
+      if (a.type === 'qty') lbl.textContent = a.label + ' ($' + a.perUnit + '/' + a.unit + ')';
+      else lbl.textContent = a.label + ' +$' + a.price;
     }
   });
 }
@@ -765,8 +775,14 @@ function calcEstimate() {
   let addonsTotal = 0, addonsUsed = [];
   ADDONS.forEach(a => {
     if (included.includes(a.id)) return;
-    const cb = document.getElementById('addon-' + a.id);
-    if (cb && cb.checked) { addonsTotal += a.price; addonsUsed.push(a.label); }
+    const inp = document.getElementById('addon-' + a.id);
+    if (!inp) return;
+    if (a.type === 'qty') {
+      const qty = parseInt(inp.value) || 0;
+      if (qty > 0) { addonsTotal += a.perUnit * qty; addonsUsed.push(qty + ' ' + a.unit + (qty>1?'s':'') + ' (' + a.label + ')'); }
+    } else {
+      if (inp.checked) { addonsTotal += a.price; addonsUsed.push(a.label); }
+    }
   });
 
   const subtotal    = (base + bedAdj + bathAdj + city + addonsTotal) * cond;
@@ -780,7 +796,7 @@ function calcEstimate() {
     <div class="est-row"><span>Bedrooms adj.</span><span>${bedAdj>=0?'+':''}$${bedAdj}</span></div>
     <div class="est-row"><span>Bathrooms adj.</span><span>${bathAdj>=0?'+':''}$${bathAdj}</span></div>
     ${city > 0 ? `<div class="est-row"><span>City charge</span><span>+$${city}</span></div>` : ''}
-    ${included.length ? `<div class="est-row"><span style="color:#1D9E75">Fridge & oven included</span><span style="color:#1D9E75">$0</span></div>` : ''}
+    ${included.length ? `<div class="est-row"><span style="color:#1D9E75">Fridge, oven, cabinets & walls incl.</span><span style="color:#1D9E75">$0</span></div>` : ''}
     ${addonsTotal > 0 ? `<div class="est-row"><span>Add-ons</span><span>+$${addonsTotal}</span></div>` : ''}
     ${cond > 1 ? `<div class="est-row"><span>Condition ×</span><span>${cond}</span></div>` : ''}
     ${freq < 1 ? `<div class="est-row"><span>Frequency discount</span><span>×${freq}</span></div>` : ''}
