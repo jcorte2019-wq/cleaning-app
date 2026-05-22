@@ -327,13 +327,24 @@ textarea { resize: vertical; min-height: 80px; }
 <div class="modal-overlay" id="modal-client" onclick="closeModalOutside(event,'modal-client')">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">New Client</div>
-    <div class="form-group"><label>Full name *</label><input id="cl-name" type="text" placeholder="Maria Garcia"></div>
-    <div class="form-group"><label>Phone *</label><input id="cl-phone" type="tel" placeholder="(713) 555-0100"></div>
-    <div class="form-group"><label>Address</label><input id="cl-address" type="text" placeholder="1234 Main St, Spring TX"></div>
-    <div class="form-group"><label>City / Zone</label><input id="cl-city" type="text" placeholder="Spring"></div>
-    <div class="form-group"><label>Notes</label><textarea id="cl-notes" placeholder="Preferred days, pets, access code..."></textarea></div>
-    <button class="btn btn-primary" onclick="saveClient()">Save client</button>
+    <div class="modal-title" id="cl-modal-title">New Client</div>
+    <input type="hidden" id="cl-edit-id" value="">
+    <div class="form-group"><label>Full name *</label><input id="cl-name" type="text" placeholder="MARIA GARCIA" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="form-group"><label>Phone *</label><input id="cl-phone" type="tel" placeholder="(346) 555-0100"></div>
+    <div class="form-group"><label>Email</label><input id="cl-email" type="email" placeholder="CLIENT@EMAIL.COM" oninput="this.value=this.value.toUpperCase()"></div>
+    <div style="font-size:13px;font-weight:600;color:var(--text2);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.06em">Primary Property</div>
+    <div class="form-group"><label>Address *</label><input id="cl-address" type="text" placeholder="1234 MAIN ST, SPRING TX" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="row2">
+      <div class="form-group"><label>City / Zone</label><input id="cl-city" type="text" placeholder="SPRING" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="form-group"><label>Sq Ft</label><input id="cl-sqft" type="number" placeholder="1200" min="0"></div>
+    </div>
+    <div class="row2">
+      <div class="form-group"><label>Bedrooms</label><input id="cl-beds" type="number" placeholder="3" min="0" max="20"></div>
+      <div class="form-group"><label>Bathrooms</label><input id="cl-baths" type="number" placeholder="2" step="0.5" min="0" max="20"></div>
+    </div>
+    <div class="form-group"><label>Gate / Access code</label><input id="cl-access" type="text" placeholder="CODE #1234" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="form-group"><label>Notes (pets, preferences...)</label><textarea id="cl-notes" placeholder="2 DOGS, PREFERS ECO PRODUCTS..." oninput="this.value=this.value.toUpperCase()"></textarea></div>
+    <button class="btn btn-primary" onclick="saveClient()" id="cl-save-btn">Save client</button>
     <div style="height:10px"></div>
     <button class="btn btn-outline" onclick="closeModal('modal-client')">Cancel</button>
   </div>
@@ -342,21 +353,26 @@ textarea { resize: vertical; min-height: 80px; }
 <div class="modal-overlay" id="modal-job" onclick="closeModalOutside(event,'modal-job')">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">New Job</div>
+    <div class="modal-title" id="job-modal-title">New Job</div>
+    <input type="hidden" id="job-edit-id" value="">
     <div class="form-group">
       <label>Client *</label>
-      <select id="job-client">
+      <select id="job-client" onchange="onClientSelect()">
         <option value="">-- Select client --</option>
       </select>
     </div>
-    <div class="form-group"><label>Or client name (quick)</label><input id="job-client-name" type="text" placeholder="New client name"></div>
+    <div class="form-group" id="job-property-wrap" style="display:none">
+      <label>Property</label>
+      <select id="job-property"></select>
+    </div>
+    <div class="form-group"><label>Or quick client name</label><input id="job-client-name" type="text" placeholder="NEW CLIENT NAME" oninput="this.value=this.value.toUpperCase()"></div>
     <div class="row2">
       <div class="form-group">
         <label>Service type *</label>
         <select id="job-type">
-          <option value="Standard">Standard</option>
-          <option value="Deep Clean">Deep Clean</option>
-          <option value="Move In/Out">Move In/Out</option>
+          <option value="STANDARD">Standard</option>
+          <option value="DEEP CLEAN">Deep Clean</option>
+          <option value="MOVE IN/OUT">Move In/Out</option>
         </select>
       </div>
       <div class="form-group">
@@ -367,7 +383,7 @@ textarea { resize: vertical; min-height: 80px; }
     <div class="row2">
       <div class="form-group"><label>Price ($) *</label><input id="job-price" type="number" placeholder="120"></div>
       <div class="form-group">
-        <label>Payment status</label>
+        <label>Status</label>
         <select id="job-status">
           <option value="pending">Pending</option>
           <option value="paid">Paid</option>
@@ -377,14 +393,14 @@ textarea { resize: vertical; min-height: 80px; }
     <div class="form-group">
       <label>Payment method</label>
       <select id="job-method">
-        <option value="Cash">Cash</option>
-        <option value="Zelle">Zelle</option>
-        <option value="Venmo">Venmo</option>
-        <option value="Check">Check</option>
+        <option value="CASH">Cash</option>
+        <option value="ZELLE">Zelle</option>
+        <option value="VENMO">Venmo</option>
+        <option value="CHECK">Check</option>
       </select>
     </div>
-    <div class="form-group"><label>Notes</label><textarea id="job-notes" placeholder="Add-ons, special instructions..."></textarea></div>
-    <button class="btn btn-primary" onclick="saveJob()">Save job</button>
+    <div class="form-group"><label>Notes</label><textarea id="job-notes" placeholder="ADD-ONS, SPECIAL INSTRUCTIONS..." oninput="this.value=this.value.toUpperCase()"></textarea></div>
+    <button class="btn btn-primary" onclick="saveJob()" id="job-save-btn">Save job</button>
     <div style="height:10px"></div>
     <button class="btn btn-outline" onclick="closeModal('modal-job')">Cancel</button>
   </div>
@@ -404,9 +420,38 @@ textarea { resize: vertical; min-height: 80px; }
   <div class="modal">
     <div class="modal-handle"></div>
     <div id="client-detail-content"></div>
-    <button class="btn btn-danger" id="client-delete-btn" style="margin-top:10px">Delete client</button>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-outline" id="client-edit-btn" style="flex:1">Edit client</button>
+      <button class="btn btn-outline" id="client-add-property-btn" style="flex:1">+ Property</button>
+    </div>
+    <div style="height:8px"></div>
+    <button class="btn btn-danger" id="client-delete-btn">Delete client</button>
     <div style="height:10px"></div>
     <button class="btn btn-outline" onclick="closeModal('modal-client-detail')">Close</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-property" onclick="closeModalOutside(event,'modal-property')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="prop-modal-title">Add Property</div>
+    <input type="hidden" id="prop-client-id" value="">
+    <input type="hidden" id="prop-edit-idx" value="">
+    <div class="form-group"><label>Property name / label *</label><input id="prop-label" type="text" placeholder="HOUSE 2 - WOODLANDS" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="form-group"><label>Address *</label><input id="prop-address" type="text" placeholder="5678 OAK ST, THE WOODLANDS TX" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="row2">
+      <div class="form-group"><label>City / Zone</label><input id="prop-city" type="text" placeholder="THE WOODLANDS" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="form-group"><label>Sq Ft</label><input id="prop-sqft" type="number" placeholder="1800" min="0"></div>
+    </div>
+    <div class="row2">
+      <div class="form-group"><label>Bedrooms</label><input id="prop-beds" type="number" placeholder="3" min="0" max="20"></div>
+      <div class="form-group"><label>Bathrooms</label><input id="prop-baths" type="number" placeholder="2" step="0.5" min="0" max="20"></div>
+    </div>
+    <div class="form-group"><label>Gate / Access code</label><input id="prop-access" type="text" placeholder="CODE #5678" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="form-group"><label>Notes</label><textarea id="prop-notes" placeholder="GARAGE ON LEFT, RING DOORBELL..." oninput="this.value=this.value.toUpperCase()"></textarea></div>
+    <button class="btn btn-primary" onclick="saveProperty()">Save property</button>
+    <div style="height:10px"></div>
+    <button class="btn btn-outline" onclick="closeModal('modal-property')">Cancel</button>
   </div>
 </div>
 
@@ -472,22 +517,68 @@ function closeModalOutside(e, id) {
 
 // ── CLIENTS ──────────────────────────────────────────────────────────────────
 function saveClient() {
-  const name = document.getElementById('cl-name').value.trim();
+  const name  = document.getElementById('cl-name').value.trim();
   const phone = document.getElementById('cl-phone').value.trim();
   if (!name || !phone) { alert('Name and phone are required.'); return; }
-  const c = {
-    id: Date.now(),
-    name, phone,
+  const editId = document.getElementById('cl-edit-id').value;
+  const primaryProp = {
+    label:   'PRIMARY PROPERTY',
     address: document.getElementById('cl-address').value.trim(),
-    city: document.getElementById('cl-city').value.trim(),
-    notes: document.getElementById('cl-notes').value.trim(),
-    createdAt: new Date().toISOString()
+    city:    document.getElementById('cl-city').value.trim(),
+    sqft:    document.getElementById('cl-sqft').value.trim(),
+    beds:    document.getElementById('cl-beds').value.trim(),
+    baths:   document.getElementById('cl-baths').value.trim(),
+    access:  document.getElementById('cl-access').value.trim(),
+    notes:   document.getElementById('cl-notes').value.trim(),
   };
-  clients.push(c);
+  if (editId) {
+    const idx = clients.findIndex(x => x.id === Number(editId));
+    if (idx > -1) {
+      const existing = clients[idx];
+      clients[idx] = { ...existing, name, phone,
+        email: document.getElementById('cl-email').value.trim(),
+        properties: existing.properties && existing.properties.length
+          ? existing.properties.map((p,i) => i===0 ? {...p, ...primaryProp, label:'PRIMARY PROPERTY'} : p)
+          : [primaryProp]
+      };
+    }
+  } else {
+    clients.push({
+      id: Date.now(),
+      name, phone,
+      email: document.getElementById('cl-email').value.trim(),
+      properties: [primaryProp],
+      createdAt: new Date().toISOString()
+    });
+  }
   save('ctx_clients', clients);
-  ['cl-name','cl-phone','cl-address','cl-city','cl-notes'].forEach(id => document.getElementById(id).value = '');
   closeModal('modal-client');
+  document.getElementById('cl-edit-id').value = '';
+  document.getElementById('cl-modal-title').textContent = 'New Client';
+  document.getElementById('cl-save-btn').textContent = 'Save client';
+  ['cl-name','cl-phone','cl-email','cl-address','cl-city','cl-sqft','cl-beds','cl-baths','cl-access','cl-notes'].forEach(id => document.getElementById(id).value = '');
   renderClients();
+}
+
+function openEditClient(id) {
+  const c = clients.find(x => x.id === id);
+  if (!c) return;
+  closeModal('modal-client-detail');
+  document.getElementById('cl-edit-id').value = c.id;
+  document.getElementById('cl-modal-title').textContent = 'Edit Client';
+  document.getElementById('cl-save-btn').textContent = 'Update client';
+  document.getElementById('cl-name').value  = c.name  || '';
+  document.getElementById('cl-phone').value = c.phone || '';
+  document.getElementById('cl-email').value = c.email || '';
+  const p = (c.properties && c.properties[0]) || {};
+  document.getElementById('cl-address').value = p.address || '';
+  document.getElementById('cl-city').value    = p.city    || '';
+  document.getElementById('cl-sqft').value    = p.sqft    || '';
+  document.getElementById('cl-beds').value    = p.beds    || '';
+  document.getElementById('cl-baths').value   = p.baths   || '';
+  document.getElementById('cl-access').value  = p.access  || '';
+  document.getElementById('cl-notes').value   = p.notes   || '';
+  openModal('modal-client');
 }
 
 function renderClients() {
@@ -499,10 +590,13 @@ function renderClients() {
   el.innerHTML = clients.map(c => {
     const cJobs = jobs.filter(j => j.clientId === c.id || j.clientName === c.name);
     const total = cJobs.reduce((s,j) => s + Number(j.price||0), 0);
+    const props = c.properties || [];
+    const primaryCity = props[0]?.city || '';
+    const propCount = props.length;
     return `<div class="list-item" onclick="showClientDetail(${c.id})">
       <div class="list-item-left">
         <div class="list-item-name">${c.name}</div>
-        <div class="list-item-sub">${c.phone}${c.city ? ' · ' + c.city : ''}</div>
+        <div class="list-item-sub">${c.phone}${primaryCity ? ' · ' + primaryCity : ''}${propCount > 1 ? ' · ' + propCount + ' properties' : ''}</div>
       </div>
       <div class="list-item-right">
         <div class="list-item-amt">$${total.toFixed(0)}</div>
@@ -517,6 +611,25 @@ function showClientDetail(id) {
   if (!c) return;
   const cJobs = jobs.filter(j => j.clientId === id || j.clientName === c.name);
   const total = cJobs.reduce((s,j) => s + Number(j.price||0), 0);
+  const props = c.properties || [];
+
+  const propsHTML = props.map((p, i) => `
+    <div style="background:var(--bg);border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:12px;font-weight:600;color:var(--g2)">${p.label || 'PROPERTY ' + (i+1)}</span>
+        <button onclick="openEditProperty(${id},${i})" style="font-size:11px;border:0.5px solid var(--border);padding:3px 9px;border-radius:6px;background:var(--card);cursor:pointer;color:var(--text2)">Edit</button>
+      </div>
+      ${p.address ? `<div style="font-size:13px;color:var(--text2)">${p.address}</div>` : ''}
+      <div style="display:flex;gap:12px;margin-top:5px;flex-wrap:wrap">
+        ${p.sqft   ? `<span style="font-size:12px;color:var(--text3)">${p.sqft} sqft</span>` : ''}
+        ${p.beds   ? `<span style="font-size:12px;color:var(--text3)">${p.beds} beds</span>` : ''}
+        ${p.baths  ? `<span style="font-size:12px;color:var(--text3)">${p.baths} baths</span>` : ''}
+        ${p.city   ? `<span style="font-size:12px;color:var(--text3)">${p.city}</span>` : ''}
+      </div>
+      ${p.access ? `<div style="font-size:12px;color:var(--warn);margin-top:4px">🔑 ${p.access}</div>` : ''}
+      ${p.notes  ? `<div style="font-size:12px;color:var(--text3);margin-top:4px">${p.notes}</div>` : ''}
+    </div>`).join('');
+
   document.getElementById('client-detail-content').innerHTML = `
     <div class="modal-title">${c.name}</div>
     <div class="card-title">Contact</div>
@@ -525,16 +638,16 @@ function showClientDetail(id) {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.61 5a2 2 0 0 1 1.99-2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10.4a16 16 0 0 0 6 6l.94-.93a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         ${c.phone}
       </a>
-      ${c.address ? `<div style="padding:8px 0;font-size:14px;color:var(--text2);border-bottom:1px solid var(--border)">${c.address}</div>` : ''}
-      ${c.city ? `<div style="padding:8px 0;font-size:14px;color:var(--text2);border-bottom:1px solid var(--border)">${c.city}</div>` : ''}
-      ${c.notes ? `<div style="padding:8px 0;font-size:13px;color:var(--text3)">${c.notes}</div>` : ''}
+      ${c.email ? `<div style="padding:8px 0;font-size:13px;color:var(--text3);border-bottom:1px solid var(--border)">${c.email}</div>` : ''}
     </div>
-    <div class="card-title">Jobs (${cJobs.length}) · Total: $${total.toFixed(0)}</div>
-    ${cJobs.length ? cJobs.map(j => `
-      <div class="list-item">
+    <div class="card-title">Properties (${props.length})</div>
+    ${propsHTML}
+    <div class="card-title" style="margin-top:10px">Jobs (${cJobs.length}) · Total: $${total.toFixed(0)}</div>
+    ${cJobs.length ? cJobs.reverse().map(j => `
+      <div class="list-item" onclick="closeModal('modal-client-detail');showJobDetail(${j.id})">
         <div class="list-item-left">
           <div class="list-item-name">${j.type}</div>
-          <div class="list-item-sub">${j.date} · ${j.method||'Cash'}</div>
+          <div class="list-item-sub">${j.date} · ${j.method||'CASH'}</div>
         </div>
         <div class="list-item-right">
           <div class="list-item-amt">$${Number(j.price).toFixed(0)}</div>
@@ -542,8 +655,10 @@ function showClientDetail(id) {
         </div>
       </div>`).join('') : '<p style="font-size:13px;color:var(--text3);padding:8px 0">No jobs yet.</p>'}
   `;
+  document.getElementById('client-edit-btn').onclick = () => openEditClient(id);
+  document.getElementById('client-add-property-btn').onclick = () => { closeModal('modal-client-detail'); openAddProperty(id); };
   document.getElementById('client-delete-btn').onclick = () => {
-    if (confirm('Delete ' + c.name + '?')) {
+    if (confirm('Delete ' + c.name + '? All their jobs will remain.')) {
       clients = clients.filter(x => x.id !== id);
       save('ctx_clients', clients);
       closeModal('modal-client-detail');
@@ -553,11 +668,80 @@ function showClientDetail(id) {
   openModal('modal-client-detail');
 }
 
+function openAddProperty(clientId) {
+  document.getElementById('prop-client-id').value = clientId;
+  document.getElementById('prop-edit-idx').value = '';
+  document.getElementById('prop-modal-title').textContent = 'Add Property';
+  ['prop-label','prop-address','prop-city','prop-sqft','prop-beds','prop-baths','prop-access','prop-notes'].forEach(id => document.getElementById(id).value = '');
+  openModal('modal-property');
+}
+
+function openEditProperty(clientId, propIdx) {
+  const c = clients.find(x => x.id === clientId);
+  if (!c || !c.properties || !c.properties[propIdx]) return;
+  const p = c.properties[propIdx];
+  closeModal('modal-client-detail');
+  document.getElementById('prop-client-id').value = clientId;
+  document.getElementById('prop-edit-idx').value = propIdx;
+  document.getElementById('prop-modal-title').textContent = 'Edit Property';
+  document.getElementById('prop-label').value   = p.label   || '';
+  document.getElementById('prop-address').value = p.address || '';
+  document.getElementById('prop-city').value    = p.city    || '';
+  document.getElementById('prop-sqft').value    = p.sqft    || '';
+  document.getElementById('prop-beds').value    = p.beds    || '';
+  document.getElementById('prop-baths').value   = p.baths   || '';
+  document.getElementById('prop-access').value  = p.access  || '';
+  document.getElementById('prop-notes').value   = p.notes   || '';
+  openModal('modal-property');
+}
+
+function saveProperty() {
+  const clientId = Number(document.getElementById('prop-client-id').value);
+  const editIdx  = document.getElementById('prop-edit-idx').value;
+  const label    = document.getElementById('prop-label').value.trim();
+  const address  = document.getElementById('prop-address').value.trim();
+  if (!label || !address) { alert('Label and address are required.'); return; }
+  const prop = {
+    label, address,
+    city:   document.getElementById('prop-city').value.trim(),
+    sqft:   document.getElementById('prop-sqft').value.trim(),
+    beds:   document.getElementById('prop-beds').value.trim(),
+    baths:  document.getElementById('prop-baths').value.trim(),
+    access: document.getElementById('prop-access').value.trim(),
+    notes:  document.getElementById('prop-notes').value.trim(),
+  };
+  const c = clients.find(x => x.id === clientId);
+  if (!c) return;
+  if (!c.properties) c.properties = [];
+  if (editIdx !== '') {
+    c.properties[Number(editIdx)] = prop;
+  } else {
+    c.properties.push(prop);
+  }
+  save('ctx_clients', clients);
+  closeModal('modal-property');
+  showClientDetail(clientId);
+}
+
 // ── JOBS ─────────────────────────────────────────────────────────────────────
 function populateClientSelect() {
   const sel = document.getElementById('job-client');
   sel.innerHTML = '<option value="">-- Select existing client --</option>' +
     clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function onClientSelect() {
+  const sel = document.getElementById('job-client');
+  const propWrap = document.getElementById('job-property-wrap');
+  const propSel  = document.getElementById('job-property');
+  if (!sel.value) { propWrap.style.display = 'none'; return; }
+  const c = clients.find(x => x.id === Number(sel.value));
+  if (!c || !c.properties || c.properties.length <= 1) {
+    propWrap.style.display = 'none';
+    return;
+  }
+  propSel.innerHTML = c.properties.map(p => `<option value="${p.label}">${p.label}${p.address ? ' — ' + p.address : ''}</option>`).join('');
+  propWrap.style.display = 'block';
 }
 
 function saveJob() {
@@ -566,25 +750,38 @@ function saveJob() {
   const date  = document.getElementById('job-date').value;
   if (!price || !date) { alert('Price and date are required.'); return; }
 
-  let clientId = null, clientName = '';
+  let clientId = null, clientName = '', propertyLabel = '';
   const sel = document.getElementById('job-client').value;
   const quickName = document.getElementById('job-client-name').value.trim();
   if (sel) {
     clientId = Number(sel);
-    clientName = clients.find(c => c.id === clientId)?.name || '';
+    const cl = clients.find(c => c.id === clientId);
+    clientName = cl?.name || '';
+    const propSel = document.getElementById('job-property');
+    if (propSel && propSel.value !== '') {
+      propertyLabel = propSel.value;
+    }
   } else if (quickName) {
     clientName = quickName;
   } else { alert('Please select or enter a client name.'); return; }
 
-  const j = {
-    id: Date.now(), clientId, clientName,
-    type, date, price,
+  const editId = document.getElementById('job-edit-id').value;
+  const jobData = { clientId, clientName, propertyLabel, type, date, price,
     status: document.getElementById('job-status').value,
     method: document.getElementById('job-method').value,
-    notes: document.getElementById('job-notes').value.trim()
+    notes:  document.getElementById('job-notes').value.trim()
   };
-  jobs.push(j);
+
+  if (editId) {
+    const idx = jobs.findIndex(x => x.id === Number(editId));
+    if (idx > -1) jobs[idx] = { ...jobs[idx], ...jobData };
+  } else {
+    jobs.push({ id: Date.now(), ...jobData });
+  }
   save('ctx_jobs', jobs);
+  document.getElementById('job-edit-id').value = '';
+  document.getElementById('job-modal-title').textContent = 'New Job';
+  document.getElementById('job-save-btn').textContent = 'Save job';
   ['job-price','job-notes','job-client-name'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('job-date').value = '';
   closeModal('modal-job');
@@ -625,15 +822,17 @@ function showJobDetail(id) {
   const j = jobs.find(x => x.id === id);
   if (!j) return;
   document.getElementById('job-detail-content').innerHTML = `
-    <div class="modal-title">${j.type} — ${j.clientName}</div>
+    <div class="modal-title">${j.type}</div>
+    <div style="font-size:14px;color:var(--text2);margin-bottom:12px">${j.clientName || 'UNKNOWN CLIENT'}${j.propertyLabel ? ' · ' + j.propertyLabel : ''}</div>
     <div class="est-preview">
       <div class="est-row"><span>Date</span><span>${j.date}</span></div>
       <div class="est-row"><span>Price</span><span>$${Number(j.price).toFixed(2)}</span></div>
-      <div class="est-row"><span>Method</span><span>${j.method||'Cash'}</span></div>
+      <div class="est-row"><span>Method</span><span>${j.method||'CASH'}</span></div>
       <div class="est-row total"><span>Status</span><span><span class="badge ${j.status==='paid'?'badge-green':'badge-orange'}">${j.status}</span></span></div>
     </div>
     ${j.notes ? `<div style="font-size:13px;color:var(--text2);margin:8px 0">${j.notes}</div>` : ''}
     ${j.status==='pending' ? `<button class="btn btn-primary" onclick="markPaid(${j.id})">Mark as paid ✓</button><div style="height:10px"></div>` : ''}
+    <button class="btn btn-outline" onclick="openEditJob(${j.id})" style="margin-top:4px">Edit job</button>
   `;
   document.getElementById('job-delete-btn').onclick = () => {
     if (confirm('Delete this job?')) {
@@ -645,6 +844,26 @@ function showJobDetail(id) {
     }
   };
   openModal('modal-job-detail');
+}
+
+function openEditJob(id) {
+  const j = jobs.find(x => x.id === id);
+  if (!j) return;
+  closeModal('modal-job-detail');
+  populateClientSelect();
+  document.getElementById('job-edit-id').value = j.id;
+  document.getElementById('job-modal-title').textContent = 'Edit Job';
+  document.getElementById('job-save-btn').textContent = 'Update job';
+  document.getElementById('job-client').value = j.clientId || '';
+  onClientSelect();
+  document.getElementById('job-client-name').value = j.clientId ? '' : (j.clientName || '');
+  document.getElementById('job-type').value   = j.type   || 'STANDARD';
+  document.getElementById('job-date').value   = j.date   || '';
+  document.getElementById('job-price').value  = j.price  || '';
+  document.getElementById('job-status').value = j.status || 'pending';
+  document.getElementById('job-method').value = j.method || 'CASH';
+  document.getElementById('job-notes').value  = j.notes  || '';
+  openModal('modal-job');
 }
 
 function markPaid(id) {
@@ -699,14 +918,14 @@ const BASE = {
 const BED_ADJ  = {1:-30,2:-15,3:0,4:20,5:40,6:60,7:85};
 const BATH_ADJ = {1:-20, 1.5:-10, 2:0, 2.5:12, 3:25, 3.5:37, 4:50, 4.5:65, 5:80};
 const ADDONS = [
-  {id:'fridge',   label:'Refrigerator',             price:40, type:'check'},
-  {id:'oven',     label:'Oven',                     price:35, type:'check'},
-  {id:'cabinets', label:'Cabinets (int.)',           price:15, type:'check'},
-  {id:'walls',    label:'Walls / Stains',            price:20, type:'check'},
+  {id:'fridge',   label:'Refrigerator',             price:35, type:'check'},
+  {id:'oven',     label:'Oven',                     price:40, type:'check'},
+  {id:'cabinets', label:'Cabinets (int.)',           price:50, type:'check'},
+  {id:'walls',    label:'Walls / Stains',            price:55, type:'check'},
   {id:'beds',     label:'Make beds & change linens', price:15, type:'qty', unit:'bed',    perUnit:15},
-  {id:'windows',  label:'Inside windows',            price:5, type:'qty', unit:'window', perUnit:5},
+  {id:'windows',  label:'Inside windows',            price:10, type:'qty', unit:'window', perUnit:10},
   {id:'laundry',  label:'Laundry (wash & dry)',      price:30, type:'check'},
-  {id:'garage',   label:'Garage sweep',              price:25, type:'check'},
+  {id:'garage',   label:'Garage sweep',              price:60, type:'check'},
   {id:'dishes',   label:'Dishes / kitchen sink',     price:25, type:'check'},
   {id:'junk',     label:'Box / junk removal',        price:50, type:'check'},
 ];
@@ -831,9 +1050,7 @@ function copyEstimate() {
   const svc = serviceDetails[e.type] || serviceDetails['standard'];
 
   const txt =
-`Hi! Thank you for your interest in Cleaning TX Solution 🏠✨
-
-Here is your estimate for a ${svc.name}:
+`Hi! Thank you for your interest, Here is your estimate for a ${svc.name}:
 
 ${svc.desc}${addonsLine}
 
