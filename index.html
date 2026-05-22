@@ -1087,5 +1087,25 @@ buildAddons();
 calcEstimate();
 document.getElementById('job-date').value = new Date().toISOString().split('T')[0];
 </script>
-</body>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBMquRVEHqdfkUey_IXDewl43FPZSb4Fms",
+    authDomain: "cleaning-tx-solution-7e78e.firebaseapp.com",
+    databaseURL: "https://cleaning-tx-solution-7e78e-default-rtdb.firebaseio.com",
+    projectId: "cleaning-tx-solution-7e78e",
+    storageBucket: "cleaning-tx-solution-7e78e.firebasestorage.app",
+    messagingSenderId: "955752662804",
+    appId: "1:955752662804:web:e34e332d9d2ed3e53ce401"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+  </body>
 </html>
